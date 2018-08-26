@@ -22,7 +22,8 @@ class rutinitas:
     def parseURL(self,x):
         lastURL=re.findall(r'([^/]\w+\d+$)',str(x))[0]
         activeURL=pengaturan.api_episodes+lastURL
-        x=pengaturan.session.get(activeURL,headers=payload)
+        x=pengaturan.session.get(activeURL,headers=payload_api)
+        print(x)
         print('\nDownloading the assets...')
         child=tidakterlalupenting.suaiubah(x.json()['subtitles'][0]['srtUrl'])
         self.srtfilename=child
@@ -58,6 +59,7 @@ class pengaturan:
     videopath='videofile'
     AuthToken=''
     UserAgent=''
+    ApiToken=''
     api_episodes='https://api.ponimu.com/api/video-url/'
     api_video='https://video.ponimu.com/hls/'
     def __init__(self):
@@ -66,6 +68,7 @@ class pengaturan:
             res=content.split('_____')
             self.AuthToken=res[0]
             self.UserAgent=res[1]
+            self.ApiToken=res[2]
         with open('streamlink.ini','r',encoding='utf-8') as r:
             self.absolute=r.read()
 
@@ -73,6 +76,10 @@ if __name__=='__main__':
     try:
         ##########
         pengaturan=pengaturan()
+        payload_api={
+        'Authorization': pengaturan.ApiToken,
+        'User-Agent': pengaturan.UserAgent,
+        }
         payload={
         'Authorization': pengaturan.AuthToken,
         'User-Agent': pengaturan.UserAgent,
@@ -84,6 +91,7 @@ if __name__=='__main__':
         #############
         rutinitas=rutinitas()
         a, resolusi,kualitas=rutinitas.cliAntarMukaUtama()
+        print(a,resolusi,kualitas)
         b=rutinitas.parseURL(a)
         c=rutinitas.parseM3u8(b)
         d=rutinitas.parseMainFile(c)
