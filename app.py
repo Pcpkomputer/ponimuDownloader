@@ -65,10 +65,10 @@ class pengaturan:
     def __init__(self):
         with open('pengaturan.ini','r',encoding='utf-8') as file:
             content=file.read()
-            res=content.split('_____')
-            self.AuthToken=res[0]
-            self.UserAgent=res[1]
-            self.ApiToken=res[2]
+            res=re.search(r"jwt_account=(.*)\s+jwt_video=(.*)\s+user_agent=(.*)",str(content))
+            self.AuthToken=res.group(1)
+            self.UserAgent=res.group(3)
+            self.ApiToken=res.group(2)
         with open('streamlink.ini','r',encoding='utf-8') as r:
             self.absolute=r.read()
 
