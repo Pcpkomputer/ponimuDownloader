@@ -36,7 +36,7 @@ class rutinitas:
         a=onrequest(x)
         return a.text
     def parseMainFile(self,x):
-        res=re.findall(r'RESOLUTION=[^,]+,NAME=\"([^\"]+)\"\s+(.*)',str(x))
+        res=re.findall(r'RESOLUTION[^N]+NAME=\"([^\"]+)\"\s+(.*)',str(x))
         return res
     def checkingNav(self,childMainFile):
         checkingNav_link=''
@@ -91,7 +91,6 @@ if __name__=='__main__':
         #############
         rutinitas=rutinitas()
         a, resolusi,kualitas=rutinitas.cliAntarMukaUtama()
-        print(a,resolusi,kualitas)
         b=rutinitas.parseURL(a)
         c=rutinitas.parseM3u8(b)
         d=rutinitas.parseMainFile(c)
